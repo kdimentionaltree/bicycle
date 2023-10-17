@@ -7,8 +7,8 @@ services:
     container_name: payment_processor_db
     volumes:
     - ./deploy/db/01_init.up.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     restart: always
     env_file:
       - .env
@@ -21,9 +21,12 @@ services:
 
   payment-processor:
     image: payment-processor
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: payment_processor
-    ports:
-      - "8081:8081"
+    # ports:
+    #   - "8081:8081"
     restart: unless-stopped
     env_file:
       - .env
@@ -45,7 +48,7 @@ services:
     container_name: payment_grafana
     restart: always
     ports:
-      - '3001:3000'
+      - '2999:3000'
     volumes:
       - ./deploy/grafana/main/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./deploy/grafana/main/provisioning/dashboards:/etc/grafana/provisioning/dashboards
@@ -63,9 +66,9 @@ services:
     image: library/rabbitmq:3-management
     container_name: payment_rabbitmq
     restart: always
-    ports:
-      - '15672:15672'
-      - '5672:5672'
+    # ports:
+    #   - '15672:15672'
+    #   - '5672:5672'
     networks:
       - p-network
 

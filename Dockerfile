@@ -3,7 +3,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get -y install git cmake g++ zlib1g-dev libssl-dev
 RUN git clone --recurse-submodules -b emulator_vm_verbosity https://github.com/dungeon-master-666/ton.git
-RUN mkdir build && (cd build && cmake ../ton -DCMAKE_BUILD_TYPE=Release && cmake --build --jobs $(nproc) . --target emulator)
+RUN mkdir build && (cd build && cmake ../ton -DCMAKE_BUILD_TYPE=Release && cmake --build . --parallel $(nproc) --target emulator)
 RUN mkdir /output && cp build/emulator/libemulator.so /output
 
 FROM docker.io/library/golang:1.19.2 AS builder
